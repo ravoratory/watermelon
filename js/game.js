@@ -1,8 +1,8 @@
 /**
- * SUIKAWWARI Game
+ * SUIKAWARI Game
  */
 import { Sprite } from "./sprite.js";
-import { openResultModal } from './modal.js'
+import { openResultModal } from "./modal.js";
 const playarea = document.getElementById("gamearea");
 const playareaCtx = playarea.getContext("2d");
 
@@ -32,11 +32,11 @@ const ptrOnStick = ptrInCircle(CTRL_INIT_X, CTRL_INIT_Y, STICK_RADIUS);
 
 const stick = { x: CTRL_INIT_X, y: CTRL_INIT_Y };
 
-const crash = new Audio("/assets/sounds/crash.mp3");
+const crash = new Audio("assets/sounds/crash.mp3");
 crash.volume = VOLUME + 0.04;
-const failed = new Audio("/assets/sounds/failed.mp3");
+const failed = new Audio("assets/sounds/failed.mp3");
 failed.volume = VOLUME + 0.04;
-const bgm = new Audio("/assets/sounds/bgm.mp3");
+const bgm = new Audio("assets/sounds/bgm.mp3");
 bgm.loop = true;
 bgm.volume = VOLUME;
 
@@ -142,10 +142,14 @@ playarea.addEventListener("mousemove", (e) => {
 });
 
 const canSplit = () => {
-  const h = melon.x + 35 - 24 < player.x + 180 + 24 && player.x + 180 - 24 < melon.x + 35 + 24;
-  const v = melon.y + 60 - 12 < player.y + 180 + 12 && player.y + 180 - 12 < melon.y + 60 + 12;
+  const h =
+    melon.x + 35 - 24 < player.x + 180 + 24 &&
+    player.x + 180 - 24 < melon.x + 35 + 24;
+  const v =
+    melon.y + 60 - 12 < player.y + 180 + 12 &&
+    player.y + 180 - 12 < melon.y + 60 + 12;
   return h && v;
-}
+};
 
 const calcScore = () => {
   const playerShadowX = player.x + 180;
@@ -153,17 +157,18 @@ const calcScore = () => {
   const melonShadowX = melon.x + 35;
   const melonShadowY = melon.y + 60;
   const d = Math.sqrt(
-    Math.pow(playerShadowX - melonShadowX, 2) + Math.pow(2 * (playerShadowY - melonShadowY), 2)
+    Math.pow(playerShadowX - melonShadowX, 2) +
+      Math.pow(2 * (playerShadowY - melonShadowY), 2)
   );
   return Math.exp(-Math.pow(d / 30, 2)) * Math.pow(10, 6);
-}
+};
 
 playarea.addEventListener("mouseup", (e) => {
   e.preventDefault();
   if (!move) {
     console.log("click");
     if (canSplit()) {
-      console.log('CRASHED!!')
+      // console.log("CRASHED!!");
       crash.play();
       openResultModal(calcScore());
       onPlaying = false;
