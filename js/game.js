@@ -2,8 +2,11 @@
  * SUIKAWWARI Game
  */
 import { Sprite } from "./sprite.js";
+import { openResultModal } from './modal.js'
 const playarea = document.getElementById("gamearea");
 const playareaCtx = playarea.getContext("2d");
+
+let onPlaying = false;
 
 const PI = Math.PI;
 const PLAYAREA_WIDTH = 1000;
@@ -86,7 +89,7 @@ const draw = () => {
   playareaCtx.drawImage(...melon.data);
   playareaCtx.drawImage(...player.data);
   drawController();
-  window.requestAnimationFrame(draw);
+  if (onPlaying) window.requestAnimationFrame(draw);
 };
 
 const loadSprites = () => {
@@ -103,6 +106,12 @@ const loadSprites = () => {
     { mx: PLAYAREA_WIDTH - 200, my: PLAYAREA_HEIGHT - 170 }
   );
   melon = new Sprite("suica.png", { w: 70, h: 70 }, { x: 700, y: 400 });
+};
+
+const resetPosition = () => {
+  player.setPosition(0, 0);
+  // crab.setPosition(300, 420);
+  // melon.setPosition(700, 400);
 };
 
 playarea.addEventListener("mousedown", (e) => {
@@ -132,20 +141,33 @@ playarea.addEventListener("mousemove", (e) => {
   );
 });
 
-const canSplit = (player, melon) => {
+const canSplit = () => {
   const h = melon.x + 35 - 24 < player.x + 180 + 24 && player.x + 180 - 24 < melon.x + 35 + 24;
   const v = melon.y + 60 - 12 < player.y + 180 + 12 && player.y + 180 - 12 < melon.y + 60 + 12;
   return h && v;
+}
+
+const calcScore = () => {
+  const playerShadowX = player.x + 180;
+  const playerShadowY = player.y + 180;
+  const melonShadowX = melon.x + 35;
+  const melonShadowY = melon.y + 60;
+  const d = Math.sqrt(
+    Math.pow(playerShadowX - melonShadowX, 2) + Math.pow(2 * (playerShadowY - melonShadowY), 2)
+  );
+  return Math.exp(-Math.pow(d / 30, 2)) * Math.pow(10, 6);
 }
 
 playarea.addEventListener("mouseup", (e) => {
   e.preventDefault();
   if (!move) {
     console.log("click");
-    if (canSplit(player, melon)) {
+    if (canSplit()) {
       console.log('CRASHED!!')
       crash.play();
-      // Game finished
+      openResultModal(calcScore());
+      onPlaying = false;
+      return;
     }
     failed.currentTime = 0;
     failed.play();
@@ -165,8 +187,10 @@ playarea.addEventListener("mouseleave", (e) => {
 });
 
 export const initGame = () => {
+  onPlaying = true;
+  resetPosition();
   window.requestAnimationFrame(draw);
-  // bgm.play();
+  bgm.play();
 };
 
 loadSprites();

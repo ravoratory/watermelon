@@ -13,15 +13,19 @@ const closeModal = () => {
 
 export const openResultModal = (score) => {
   const headerMessage = document.getElementById('headerMessage');
+  const bodyImg = document.getElementById('bodyImg');
   const bodyMessage = document.getElementById('bodyMessage');
   const buttonMessage = document.getElementById('buttonMessage');
   headerMessage.textContent = 'Result';
-  bodyMessage.textContent = `SCORE: ${score}`;
+  bodyImg.src = '/assets/img/break.png';
+  bodyMessage.textContent = `SCORE: ${Math.trunc(score)}`;
+  bodyMessage.style.fontSize = '32px';
+  bodyMessage.style.fontWeight = 'bold';
   buttonMessage.textContent = 'REPLAY';
 
   modalButton.onclick = () => {
     closeModal();
-    // ゲームをリプレイ出来るような処理
+    initGame();
   };
   openModal();
 }

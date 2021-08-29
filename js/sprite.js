@@ -1,4 +1,4 @@
-const loadImage = (filename) => {
+export const loadImage = (filename) => {
   const img = new Image();
   img.src = `/assets/img/${filename}`;
   return img;
