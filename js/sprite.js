@@ -1,6 +1,6 @@
 export const loadImage = (filename) => {
   const img = new Image();
-  img.src = `../assets/img/${filename}`;
+  img.src = `assets/img/${filename}`;
   return img;
 };
 
