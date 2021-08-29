@@ -13,7 +13,7 @@ const CTRL_PADDING = 30;
 const CTRL_INIT_X = PLAYAREA_WIDTH - CTRL_RADIUS - CTRL_PADDING;
 const CTRL_INIT_Y = PLAYAREA_HEIGHT - CTRL_RADIUS - CTRL_PADDING;
 const STICK_RADIUS = 20;
-
+const VOLUME = 0.01;
 const PLAYER_SPEED = 6;
 
 let crab, player, melon;
@@ -28,6 +28,14 @@ const ptrInCircle = (cx, cy, r) => (x, y) => {
 const ptrOnStick = ptrInCircle(CTRL_INIT_X, CTRL_INIT_Y, STICK_RADIUS);
 
 const stick = { x: CTRL_INIT_X, y: CTRL_INIT_Y };
+
+const crash = new Audio("/assets/sounds/crash.mp3");
+crash.volume = VOLUME + 0.04;
+const failed = new Audio("/assets/sounds/failed.mp3");
+failed.volume = VOLUME + 0.04;
+const bgm = new Audio("/assets/sounds/bgm.mp3");
+bgm.loop = true;
+bgm.volume = VOLUME;
 
 const drawController = () => {
   playareaCtx.save();
@@ -48,8 +56,23 @@ const drawController = () => {
 
 const drawHitBox = () => {
   playareaCtx.save();
-  playareaCtx.ellipse(player.x + 180, player.y + 180, 24, 14, 0, 0, 2 * PI);
-
+  playareaCtx.beginPath();
+  playareaCtx.ellipse(player.x + 180, player.y + 180, 24, 12, 0, 0, 2 * PI);
+  playareaCtx.fillStyle = "rgba(0, 0, 120, 0.8)";
+  playareaCtx.fill();
+  playareaCtx.restore();
+  playareaCtx.beginPath();
+  playareaCtx.ellipse(player.x + 70, player.y + 185, 36, 12, 0, 0, 2 * PI);
+  playareaCtx.fillStyle = "rgba(0, 0, 0, 0.5)";
+  playareaCtx.fill();
+  playareaCtx.restore();
+  playareaCtx.beginPath();
+  playareaCtx.ellipse(melon.x + 35, melon.y + 60, 24, 12, 0, 0, 2 * PI);
+  playareaCtx.fillStyle = "rgba(0, 0, 0, 0.5)";
+  playareaCtx.fill();
+  playareaCtx.restore();
+  playareaCtx.beginPath();
+  playareaCtx.ellipse(crab.x + 26, crab.y + 48, 20, 8, 0, 0, 2 * PI);
   playareaCtx.fillStyle = "rgba(0, 0, 0, 0.5)";
   playareaCtx.fill();
   playareaCtx.restore();
@@ -63,7 +86,6 @@ const draw = () => {
   playareaCtx.drawImage(...melon.data);
   playareaCtx.drawImage(...player.data);
   drawController();
-
   window.requestAnimationFrame(draw);
 };
 
@@ -71,7 +93,7 @@ const loadSprites = () => {
   crab = new Sprite(
     "crab.png",
     { w: 50, h: 50 },
-    { x: 120, y: 400 },
+    { x: 300, y: 420 },
     { mx: PLAYAREA_WIDTH - 200, my: PLAYAREA_HEIGHT - 170 }
   );
   player = new Sprite(
@@ -114,6 +136,8 @@ playarea.addEventListener("mouseup", (e) => {
   e.preventDefault();
   if (!move) {
     console.log("click");
+    crash.currentTime = 0;
+    failed.play();
   } else {
     [stick.x, stick.y] = [CTRL_INIT_X, CTRL_INIT_Y];
     player.setSpeed(0, 0);
@@ -131,6 +155,7 @@ playarea.addEventListener("mouseleave", (e) => {
 
 const init = () => {
   window.requestAnimationFrame(draw);
+  // bgm.play();
 };
 
 loadSprites();
