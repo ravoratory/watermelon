@@ -132,11 +132,22 @@ playarea.addEventListener("mousemove", (e) => {
   );
 });
 
+const canSplit = (player, melon) => {
+  const h = melon.x + 35 - 24 < player.x + 180 + 24 && player.x + 180 - 24 < melon.x + 35 + 24;
+  const v = melon.y + 60 - 12 < player.y + 180 + 12 && player.y + 180 - 12 < melon.y + 60 + 12;
+  return h && v;
+}
+
 playarea.addEventListener("mouseup", (e) => {
   e.preventDefault();
   if (!move) {
     console.log("click");
-    crash.currentTime = 0;
+    if (canSplit(player, melon)) {
+      console.log('CRASHED!!')
+      crash.play();
+      // Game finished
+    }
+    failed.currentTime = 0;
     failed.play();
   } else {
     [stick.x, stick.y] = [CTRL_INIT_X, CTRL_INIT_Y];
