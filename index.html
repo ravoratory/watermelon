@@ -3,12 +3,27 @@
   <head>
     <meta charset="utf-8" />
     <title>SUIKAWARI</title>
+    <link rel="stylesheet" href="css/game.css"/>
+    <link rel="stylesheet" href="css/modal.css">
     <script src="js/game.js" type="module" defer></script>
-    <link href="css/game.css" rel="stylesheet" />
+    <script src="js/modal.js" type="module" defer></script>
   </head>
-
   <body>
     <div id="board">
+      <div id="modal" class="modal">
+        <div id="modalHeader" class="modal-header">
+          <span id="headerMessage">SUIKAWARI</span>
+        </div>
+        <div id="modalBody" class="modal-body">
+          <img src="assets/img/description.png" height="250" width="250">
+          <div id="bodyMessage">
+            <span>コントローラーの赤丸をドラッグ</span>
+          </div>
+        </div>
+        <a id="modalButton" class="modal-btn btn-animation">
+          <span id="buttonMessage">PLAY</span>
+        </a>
+      </div>
       <canvas class="area" id="gamearea" width="1000" height="680"></canvas>
     </div>
   </body>

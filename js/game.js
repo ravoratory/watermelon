@@ -153,10 +153,9 @@ playarea.addEventListener("mouseleave", (e) => {
   player.setSpeed(0, 0);
 });
 
-const init = () => {
+export const initGame = () => {
   window.requestAnimationFrame(draw);
   // bgm.play();
 };
 
 loadSprites();
-init();

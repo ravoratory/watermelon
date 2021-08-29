@@ -2,5 +2,6 @@
   width: 1000px;
   height: 680px;
   outline: 2px black solid;
-  background-image: url("/assets/img/sea.jpg");
+  background-image: url("/assets/img/title.jpg");
+  position: relative;
 }
