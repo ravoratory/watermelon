@@ -32,11 +32,11 @@ const ptrOnStick = ptrInCircle(CTRL_INIT_X, CTRL_INIT_Y, STICK_RADIUS);
 
 const stick = { x: CTRL_INIT_X, y: CTRL_INIT_Y };
 
-const crash = new Audio("assets/sounds/crash.mp3");
+const crash = new Audio("../assets/sounds/crash.mp3");
 crash.volume = VOLUME + 0.04;
-const failed = new Audio("assets/sounds/failed.mp3");
+const failed = new Audio("../assets/sounds/failed.mp3");
 failed.volume = VOLUME + 0.04;
-const bgm = new Audio("assets/sounds/bgm.mp3");
+const bgm = new Audio("../assets/sounds/bgm.mp3");
 bgm.loop = true;
 bgm.volume = VOLUME;
 

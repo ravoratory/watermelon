@@ -31,7 +31,7 @@ export const openResultModal = (score) => {
 };
 
 const initModal = () => {
-  const backgroundImgUrl = "url(assets/img/sea.jpg)";
+  const backgroundImgUrl = "url(../assets/img/sea.jpg)";
   modalButton.onclick = () => {
     closeModal();
     document.getElementById("board").style.backgroundImage = backgroundImgUrl;
