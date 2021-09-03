@@ -16,7 +16,7 @@ const CTRL_PADDING = 30;
 const CTRL_INIT_X = PLAYAREA_WIDTH - CTRL_RADIUS - CTRL_PADDING;
 const CTRL_INIT_Y = PLAYAREA_HEIGHT - CTRL_RADIUS - CTRL_PADDING;
 const STICK_RADIUS = 20;
-const VOLUME = 0.01;
+const VOLUME = 0.03;
 const PLAYER_SPEED = 6;
 
 let crab, player, melon;
@@ -142,13 +142,19 @@ playarea.addEventListener("mousemove", (e) => {
 });
 
 const canSplit = () => {
-  const h =
-    melon.x + 35 - 24 < player.x + 180 + 24 &&
-    player.x + 180 - 24 < melon.x + 35 + 24;
-  const v =
-    melon.y + 60 - 12 < player.y + 180 + 12 &&
-    player.y + 180 - 12 < melon.y + 60 + 12;
-  return h && v;
+  const p = { x: player.x + 180, y: player.y + 180 };
+  const m = { x: melon.x + 35, y: melon.y + 60 };
+  const dif = { x: p.x - m.x, y: p.y - m.y };
+  const r = Math.sqrt(dif.x ** 2 + dif.y ** 2);
+  const rad = Math.atan2(2 * dif.y, dif.x);
+  const d = 24 * Math.sqrt(1 + 3 * Math.cos(rad) ** 2);
+  return d >= r;
+};
+
+const createResultText = (score) => {
+  const bonus = 1.7;
+  const total = Math.trunc(score * bonus);
+  return `SCORE: ${Math.trunc(score)}<br>BONUS: x${bonus}<br>TOTAL: ${total}`;
 };
 
 const calcScore = () => {
@@ -160,22 +166,23 @@ const calcScore = () => {
     Math.pow(playerShadowX - melonShadowX, 2) +
       Math.pow(2 * (playerShadowY - melonShadowY), 2)
   );
-  return Math.exp(-Math.pow(d / 30, 2)) * Math.pow(10, 6);
+  return Math.exp(-Math.pow(d / 18, 2)) * Math.pow(10, 6);
 };
 
 playarea.addEventListener("mouseup", (e) => {
   e.preventDefault();
-  if (!move) {
+  if (!move && hold) {
     console.log("click");
     if (canSplit()) {
       // console.log("CRASHED!!");
       crash.play();
-      openResultModal(calcScore());
+      openResultModal(createResultText(calcScore()));
       onPlaying = false;
       return;
+    } else {
+      failed.currentTime = 0;
+      failed.play();
     }
-    failed.currentTime = 0;
-    failed.play();
   } else {
     [stick.x, stick.y] = [CTRL_INIT_X, CTRL_INIT_Y];
     player.setSpeed(0, 0);
