@@ -18,7 +18,7 @@ export const openResultModal = (score) => {
   const buttonMessage = document.getElementById("buttonMessage");
   headerMessage.textContent = "Result";
   bodyImg.src = "assets/img/break.png";
-  bodyMessage.textContent = `SCORE: ${Math.trunc(score)}`;
+  bodyMessage.innerHTML = score;
   bodyMessage.style.fontSize = "32px";
   bodyMessage.style.fontWeight = "bold";
   buttonMessage.textContent = "REPLAY";
