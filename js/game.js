@@ -152,7 +152,7 @@ const canSplit = () => {
 };
 
 const createResultText = (score) => {
-  const bonus = 1.7;
+  const bonus = 1.0;
   const total = Math.trunc(score * bonus);
   return `SCORE: ${Math.trunc(score)}<br>BONUS: x${bonus}<br>TOTAL: ${total}`;
 };
@@ -174,7 +174,6 @@ playarea.addEventListener("mouseup", (e) => {
   if (!move && hold) {
     console.log("click");
     if (canSplit()) {
-      // console.log("CRASHED!!");
       crash.play();
       openResultModal(createResultText(calcScore()));
       onPlaying = false;
